@@ -16,4 +16,4 @@ chmod +x Launch
 
 اموزش به صورت ویدیو در کانال تلگرام 
 
-@learn_cli_bot  :)
+https://t.me/learn_cli_bot  :)
