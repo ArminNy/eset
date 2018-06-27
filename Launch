@@ -1,0 +1,160 @@
+#!/bin/sh
+
+memTotal_b=`free -b |grep Mem |awk '{print $2}'`
+memFree_b=`free -b |grep Mem |awk '{print $4}'`
+memBuffer_b=`free -b |grep Mem |awk '{print $6}'`
+memCache_b=`free -b |grep Mem |awk '{print $7}'`
+memTotal_m=`free -m |grep Mem |awk '{print $2}'`
+memFree_m=`free -m |grep Mem |awk '{print $4}'`
+memBuffer_m=`free -m |grep Mem |awk '{print $6}'`
+memCache_m=`free -m |grep Mem |awk '{print $7}'`
+CPUPer=`top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}'`
+hdd=`df -lh | awk '{if ($6 == "/") { print $5 }}' | head -1 | cut -d'%' -f1`
+uptime=`uptime`
+time=`date` 
+calendar=`cal` 
+ProcessCnt=`ps -A | wc -l`
+memUsed_b=$(($memTotal_b-$memFree_b))
+memUsed_m=$(($memTotal_m-$memFree_m))
+memUsedPrc=$((($memUsed_b*100)/$memTotal_b))
+
+
+if [ "$1" = "Help" ]; then
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> راهنمای دستورات :                                              <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Server : مشاهده منابع سرور .                          <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Install : نصب پیش نیاز ها .                           <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Create : ساختن ربات .                                 <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Login : ورود به اکانت ربات .                          <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Run : اجرا کردن یک ربات .                             <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+echo "${CYAN}>>> ./Launch Stop : متوقف کردن یک ربات .                           <<<${NC}"
+echo "${CYAN}                                                                      ${NC}"
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Install" ]; then
+wget "https://arminny.speed-hosting.ir/TDDELTA/telegram-bot" -O tg
+chmod +x tg
+cd /home/bot3/eset
+mkdir .telegram-bot
+cd .telegram-bot
+> config
+cd /home/bot3/eset
+chmod +x tg
+sudo apt-get update 
+sudo apt-get upgrade
+sudo apt-get update -y
+sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev libjansson* libpython-dev make autoconf unzip git redis-server g++ -y --force-yes
+sudo apt-get install libreadline-dev libssl-dev lua5.2 liblua5.2-dev git make unzip redis-server curl libcurl4-gnutls-dev -y
+sudo apt-get install unrar -y
+sudo apt-get install libreadline-dev libssl-dev lua5.2 liblua5.2-dev git make unzip redis-server curl libcurl4-gnutls-dev
+wget http://luarocks.org/releases/luarocks-2.4.3.tar.gz
+tar zxpf luarocks-2.4.3.tar.gz
+rm -rf zxpf luarocks-2.4.3.tar.gz
+cd luarocks-2.4.3
+./configure; sudo make bootstrap
+sudo luarocks install luasec
+sudo luarocks install luasocket
+sudo luarocks install redis-lua
+sudo luarocks install lua-term
+sudo luarocks install serpent
+sudo luarocks install dkjson
+sudo luarocks install Lua-cURL
+cd ..
+sudo apt-get install lua-json
+sudo apt-get install libconfig++9v5 -y
+sudo apt-get install libstdc++6 -y
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+sudo apt-get install lua-lgi -y 
+sudo apt-get install libnotify-dev -y
+sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev lua-socket lua-sec lua-expat libevent-dev make unzip git redis-server autoconf g++ libjansson-dev libpython-dev expat libexpat1-dev -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y
+sudo apt-get install libstdc++6
+sudo apt-get install dos2unix
+sudo find . -type f -exec dos2unix {} \;
+sudo apt-get upgrade
+sudo apt-get update 
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+MG="\033[0;35m"
+echo "${CYAN}>>> نصب کامل شد . <<<${NC}"
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Stats" ]; then
+echo '• کل رم : '"$memTotal_m"' مگابایت'
+echo '• میزان استفاده شده از رم : '"$memUsed_m"' مگابایت - '"$memUsedPrc"'%'
+echo '• مقدار استفاده شده از سی پی یو : '"$CPUPer"'%'
+echo '• مقدار استفاده شده از حافظه : '"$hdd"'%'
+echo '• فراید های در حال اجرا : '"$ProcessCnt"''
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Server" ]; then
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}>>> • کل رم : "$memTotal_m" مگابایت <<<${NC}"
+echo ""
+echo "${CYAN}>>> • میزان استفاده شده از رم : "$memUsed_m" مگابایت - "$memUsedPrc"% <<<${NC}"
+echo ""
+echo "${CYAN}>>> • مقدار استفاده شده از سی پی یو : "$CPUPer"% <<<${NC}"
+echo ""
+echo "${CYAN}>>> • مقدار استفاده شده از حافظه : "$hdd"% <<<${NC}"
+echo ""
+echo "${CYAN}>>> • فراید های در حال اجرا : "$ProcessCnt" <<<${NC}"
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Create" ]; then
+lua /home/bot3/eset/Creator.c
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Login" ]; then
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}>>> شناسه نمایه ربات را وارد کنید : <<<${NC}"
+read Id
+echo "${CYAN}>>> شماره ربات را وارد کنید : <<<${NC}"
+read CliPhoneNumber
+sudo /home/bot3/eset/tg -p advertiser-${Id} --login --phone=${CliPhoneNumber}
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Run" ]; then
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}>>> شناسه نمایه ربات را وارد کنید : <<<${NC}"
+read Id
+sudo tmux new-session -d -s Run${Id} "/home/bot3/eset/Advertiser-"${Id}".sh"
+echo "${CYAN}>>> ربات شماره "${Id}" در پشت ضمینه اجرا شد . <<<${NC}"
+exit 1
+#------------------------------------------------------#
+elif [ "$1" = "Stop" ]; then
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}>>> شناسه نمایه ربات را وارد کنید : <<<${NC}"
+read Id
+sudo tmux kill-session -t Run${Id}
+echo "${CYAN}>>> ربات شماره "${Id}" در پشت ضمینه متوقف شد . <<<${NC}"
+exit 1
+#------------------------------------------------------#
+else
+RED="\033[0;31m"
+NC="\033[0m"
+CYAN="\033[0;36m"
+echo "${CYAN}>>> لطفا دستور ./Launch Help را ارسال نمایدد <<<${NC}"
+exit 1
+#------------------------------------------------------#
+fi
